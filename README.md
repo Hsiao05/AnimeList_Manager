@@ -15,7 +15,7 @@
 - 个人评分分布折线图
 - 可选择是否在个人初次评分前隐藏 Bangumi 评分，默认隐藏
 - 未评分条目不会按 0 分计入个人均分和评分分布图
-- 自动同步 `outputs/anime.xlsx`
+- 自动同步 `outputs/anime.xlsx`，也支持手动导出 xlsx 文件
 - 支持浅色模式和深色模式，默认浅色
 - Windows 启动工具可检查环境、启动、停止和打开网页
 
@@ -26,27 +26,48 @@
 
 当前项目不依赖 npm 第三方包，只需要 Node.js。
 
-## 启动方式
+## 快速开始
 
-Windows 用户可以双击：
+### Windows
 
-```text
-启动工具.cmd
-```
+0. （选做）删除 macOS 专用文件：
 
-或：
+`BangumiManager.command`
+`启动工具.command`
+`tools/launcher.sh`
 
-```text
-BangumiManager.cmd
-```
+1. 双击打开 `启动工具.cmd` 或 `BangumiManager.cmd`
 
-也可以在项目目录运行：
+1. 也可以在项目目录运行：
 
 ```powershell
 npm.cmd start
 ```
 
-启动后打开：
+### macOS
+
+0.（选做）删除 Windows 专用文件：
+
+`启动工具.cmd`
+`BangumiManager.cmd`
+`tools/launcher.cmd`
+`tools/launcher.ps1`
+
+1. 打开 `启动工具.command` 或 `BangumiManager.command`
+
+如果 macOS 提示没有执行权限，先在项目目录运行一次：
+
+```bash
+chmod +x 启动工具.command BangumiManager.command tools/launcher.sh
+```
+
+1. 也可以在项目目录运行：
+
+```bash
+npm start
+```
+
+### 启动后打开
 
 ```text
 http://localhost:3000
