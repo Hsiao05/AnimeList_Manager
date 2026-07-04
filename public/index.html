@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bangumi 动画整理工具</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <h1>Bangumi 动画整理</h1>
+          <p id="syncState">本地数据库与 Excel 自动同步</p>
+        </div>
+        <div class="top-actions">
+          <button id="themeToggle" class="ghost theme-toggle" type="button">深色模式</button>
+          <label class="switch">
+            <input id="autoHideResults" type="checkbox" checked />
+            <span>选择后隐藏搜索结果</span>
+          </label>
+          <label class="switch">
+            <input id="hideBangumiBeforeRating" type="checkbox" checked />
+            <span>评分前隐藏 Bangumi 评分</span>
+          </label>
+          <a class="download" href="/api/excel">下载 Excel</a>
+        </div>
+      </header>
+
+      <section class="list-panel">
+        <div class="list-head">
+          <div>
+            <h2>动画列表</h2>
+            <p id="listCount"></p>
+          </div>
+          <div class="filters">
+            <input id="filterText" type="search" placeholder="筛选标题 / tag / 公司 / 年份" />
+            <select id="filterStatus"></select>
+            <button id="clearFiltersBtn" class="ghost compact-btn" type="button">清除</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>标题</th>
+                <th>年/季</th>
+                <th>制作</th>
+                <th>标签前十</th>
+                <th>状态</th>
+                <th>个人</th>
+                <th>差值</th>
+              </tr>
+            </thead>
+            <tbody id="animeTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="right-column">
+        <section class="search-panel">
+          <div class="search-row">
+            <input id="searchInput" type="search" placeholder="搜索动画名称，支持中文 / 日文" />
+            <button id="searchBtn">搜索</button>
+            <button id="manualAddBtn" class="ghost" type="button">手动添加</button>
+          </div>
+          <div id="results" class="results" aria-live="polite"></div>
+        </section>
+
+        <section id="selectedPanel" class="selected-panel">
+          <div id="emptyDetail" class="empty-detail">
+            <h2>动画详情</h2>
+            <p>从左侧列表选择动画，或在上方搜索 Bangumi 条目。</p>
+          </div>
+          <div id="detailContent" class="detail-content hidden">
+            <div class="selected-media">
+              <img id="selectedPoster" alt="" />
+            </div>
+            <div class="selected-main">
+              <div class="panel-title-row">
+                <div>
+                  <h2 id="selectedTitle"></h2>
+                  <p id="selectedOriginal"></p>
+                </div>
+                <a id="selectedLink" class="link-btn" target="_blank" rel="noreferrer">Bangumi</a>
+              </div>
+              <div class="meta-grid">
+                <div><dt>放送</dt><dd id="selectedYear"></dd></div>
+                <div><dt>季度</dt><dd id="selectedSeason"></dd></div>
+                <div><dt>集数</dt><dd id="selectedEpisodes"></dd></div>
+                <div><dt>制作公司</dt><dd id="selectedStudio"></dd></div>
+                <div><dt>导演</dt><dd id="selectedDirector"></dd></div>
+                <div><dt>Bangumi 评分</dt><dd id="selectedBangumiScore"></dd></div>
+                <div><dt>评分差</dt><dd id="selectedScoreDiff"></dd></div>
+              </div>
+              <div id="manualFields" class="manual-fields hidden">
+                <label>
+                  中文标题
+                  <input id="manualTitleCn" type="text" placeholder="中文标题" />
+                </label>
+                <label>
+                  原名标题
+                  <input id="manualTitleOriginal" type="text" placeholder="原名或备用标题" />
+                </label>
+                <label>
+                  放送年
+                  <input id="manualYear" type="number" min="1900" max="2100" placeholder="2026" />
+                </label>
+                <label>
+                  季度
+                  <input id="manualSeason" type="text" placeholder="春 / 夏 / 秋 / 冬 / 5月" />
+                </label>
+                <label>
+                  集数
+                  <input id="manualEpisodes" type="text" placeholder="12" />
+                </label>
+                <label>
+                  制作公司
+                  <input id="manualStudio" type="text" placeholder="制作公司" />
+                </label>
+                <label>
+                  导演
+                  <input id="manualDirector" type="text" placeholder="导演" />
+                </label>
+              </div>
+              <div id="selectedTags" class="tags"></div>
+              <div id="selectedCast" class="cast-list"></div>
+              <p id="selectedSummary" class="summary"></p>
+              <div class="editor-grid">
+                <label>
+                  观看状态
+                  <select id="statusInput"></select>
+                </label>
+                <label>
+                  个人评分
+                  <input id="scoreInput" type="number" min="0" max="10" step="0.1" placeholder="0-10" />
+                </label>
+                <label class="comment-field">
+                  个人评论
+                  <textarea id="commentInput" rows="3" placeholder="写一点自己的观感"></textarea>
+                </label>
+                <label class="tag-field">
+                  标签编辑
+                  <textarea id="tagInput" rows="3" placeholder="用逗号、顿号或换行分隔标签"></textarea>
+                </label>
+              </div>
+              <div class="detail-actions">
+                <button id="addBtn" class="primary">加入数据库</button>
+                <button id="deleteBtn" class="danger hidden">删除条目</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="stats-panel">
+          <div class="stats-head">
+            <div>
+              <h2>统计</h2>
+              <p id="scoreSummary"></p>
+            </div>
+          </div>
+          <div class="stat-cards" id="statusStats"></div>
+          <div class="chart-card">
+            <div class="chart-head">
+              <h3>个人评分</h3>
+              <span>横坐标为评分，纵坐标为频数</span>
+            </div>
+            <canvas id="scoreChart" width="720" height="280"></canvas>
+          </div>
+          <details class="tag-stats">
+            <summary>展开标签统计</summary>
+            <div id="tagStats" class="tag-stat-grid"></div>
+          </details>
+        </section>
+      </div>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
