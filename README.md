@@ -28,12 +28,14 @@
 
 ## 快速开始
 
+先打包下载本仓库后解压
+
 ### Windows
 
 0. （选做）删除 macOS 专用文件：
 
-`BangumiManager.command`
 `启动工具.command`
+`BangumiManager.command`
 `tools/launcher.sh`
 
 1. 双击打开 `启动工具.cmd` 或 `BangumiManager.cmd`
@@ -89,9 +91,9 @@ outputs/anime.xlsx
 
 `data/anime.json` 是主要数据源，`outputs/anime.xlsx` 是同步导出的表格。建议优先备份 `data/anime.json`。
 
-## 在其他电脑上使用
+## 数据迁移
 
-另一台电脑需要先安装 Node.js 20 或更新版本。
+另一台设备需要先安装 Node.js 20 或更新版本。
 
 拷贝整个项目文件夹是最简单的方式。至少需要保留以下结构：
 
@@ -149,3 +151,5 @@ npm.cmd start
 node --check server.js
 node --check public\app.js
 ```
+
+感谢 Codex 在撰写代码上的支持
